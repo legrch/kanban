@@ -1,18 +1,18 @@
 # Kanban
 
-A project workspace for keeping human and AI-assisted work understandable: what is happening, who owns it, what comes next, and what evidence supports the status.
+![Illustrated Kanban workflow with synthetic example tasks](docs/media/kanban-workflow.gif)
 
-Kanban is a maintained web app with a visual board, a compact list view, and a Model Context Protocol (MCP) interface for connected assistants. Each card brings together the task, its next step, supporting links, and a durable update history. It is useful when work spans several projects, conversations, and coding sessions, but you still want one place to review progress.
+*Illustrated demo with synthetic data, not a live UI or agent-execution recording.*
 
-## A look at the workspace
+**Keep the next step, owner, and evidence together.**
 
-![Illustrated Kanban board with synthetic example tasks](docs/media/kanban-board.png)
+Kanban is a maintained, open-source workspace for human and AI-assisted projects. It brings tasks, supporting links, and update history into one board, so you can see what is moving, what is blocked, and what needs a decision. Run your own local board, or connect assistants through a private Sites deployment.
 
-*Illustrated demo with synthetic data.*
+**Choose your path:** [With an agent](#install-with-codex-or-claude-code) · [In a terminal](#quick-start) · [Hosted assistants](#let-an-agent-work-with-cards)
 
 ## Quick start
 
-Install **Node.js 24** with npm, then run:
+You need **Git and Node.js 24 with npm**:
 
 ```sh
 git clone https://github.com/legrch/kanban.git
@@ -21,84 +21,137 @@ npm ci
 npm run dev
 ```
 
-When the terminal prints `Kanban is ready`, open **[http://127.0.0.1:5173](http://127.0.0.1:5173)**. The first start creates the local database and applies the schema automatically. Create your first task in the browser.
+When the terminal prints `Kanban is ready`, open **[http://127.0.0.1:5173](http://127.0.0.1:5173)** and create your first task. The database and schema are set up automatically.
 
-No Docker, Cloudflare account, ChatGPT account, or API keys are needed for this local preview. It uses a development-only sign-in stub and stores data on your machine. Stop with **Ctrl+C**; run `npm run dev` again to continue with the same cards and history.
+No Docker, Cloudflare account, ChatGPT account, or API keys are needed locally. The preview uses a development-only sign-in stub. Stop with **Ctrl+C**; start again with `npm run dev` to keep working with the same cards and history.
 
-Local startup and database persistence have been verified on Linux with Node.js 24. Other operating systems have not yet been verified. Hosted assistant connections are a [separate setup](#work-with-dot-chatgpt-codex-and-other-agents).
+Local startup and database persistence have been verified on Linux with Node.js 24. Other operating systems have not yet been verified.
+
+### Install with Codex or Claude Code
+
+Give this request to Codex, Claude Code, or another coding assistant with terminal access. It creates your local browser board; it **does not connect the agent to the card tools**. For that, see [hosted MCP setup](#let-an-agent-work-with-cards).
+
+```text
+Set up https://github.com/legrch/kanban in a new folder on my computer.
+If you cannot run commands here, say so instead of installing elsewhere.
+Check Git, Node.js 24, and npm; ask before changing system software.
+Do not overwrite existing folders. Read the README, run npm ci, then npm run dev.
+
+Wait for “Kanban is ready” and verify http://127.0.0.1:5173 responds. Check the
+dashboard in a browser if available; distinguish that from an HTTP-only check.
+Keep the server running and give me the URL, folder, and stop/restart commands.
+
+Keep project changes inside the new checkout. Do not touch other projects, existing data,
+credentials, global settings, or production. No cloud credentials or network
+exposure. If port 5173 is occupied, do not kill another process or change ports.
+Report blockers and exact errors instead of bypassing restrictions.
+```
 
 ## What you can do
 
-- **Keep active work focused.** Separate Backlog, active work, and completed cards. Active work has In progress, In review, and Blocked stages; move cards with drag-and-drop or the stage selector.
-- **Find the task that needs attention.** Switch between board and list views, search by task number or text, filter by project and stage, and use quick views for blocked, high-priority, estimated, or unestimated work.
-- **Record a useful handoff.** Give each card an owner, context, a concrete next step, priority, evidence, and source or commit references. Mark evidence as Verified, Reported, or Not verified.
-- **Estimate without inventing precision.** Optionally use 1, 2, 3, 5, 8, or 13 story points. See active and Done-card point totals alongside estimation coverage. These are current-card summaries, not time estimates or velocity forecasts.
-- **Keep references stable.** New cards receive project-specific numbers such as `ALP-001` and a direct `/tasks/ALP-001` link. A card keeps its number when its project or stage changes.
-- **See what changed.** Card history retains meaningful updates, changed fields, and the recorded snapshot. Earlier entries can be loaded in pages of 100; history starts when tracking is enabled.
-- **Return to the source.** Attach HTTPS links to discussions, pull requests, and other evidence, or use a Codex thread link to open the desktop app. The layout adapts to smaller screens, with compact and comfortable display options.
+- **Focus on active work.** Keep Backlog separate from In progress, In review, and Blocked. Move cards with drag-and-drop or the stage selector.
+- **Find what needs attention.** Use board or list view, project and stage filters, text search, and quick views for blocked, high-priority, estimated, or unestimated tasks. Compact and comfortable layouts adapt to smaller screens.
+- **Leave a useful handoff.** Record the owner, context, next step, priority, evidence, and source or commit. Link to discussions and pull requests, or open a Codex desktop thread. Evidence can be marked Verified, Reported, or Not verified.
+- **Estimate deliberately.** Choose optional story points from 1, 2, 3, 5, 8, or 13. See active and Done-card totals alongside estimation coverage. These summarize current card values, not hours or velocity forecasts.
+- **Keep stable references.** Cards receive project numbers such as `ALP-001` and direct `/tasks/ALP-001` links. Moving a card to another project or stage preserves its number.
+- **Review meaningful changes.** History records changed fields and the saved snapshot, with earlier entries available in pages of 100. Tracking begins when enabled; unchanged submissions do not add noise.
 
-## A daily workflow
+![Illustrated Kanban board with synthetic example tasks](docs/media/kanban-board.png)
 
-1. Capture a task in Backlog with an owner, context, and a next step. Add an estimate only when you have one.
-2. Move it to In progress when work begins. Keep the card linked to the conversation, code review, or other source where the work happens.
-3. Update the card when there is a meaningful change. If it is blocked, explain why and record the action needed to unblock it. Distinguish a reported result from one you have verified.
-4. Review the evidence before moving the card to Done. Completed cards and their history remain in **Done & archive**; move a card to another stage to reopen it. This is a view of the Done stage, not a separate archive store.
+*Illustrated board with synthetic data.*
 
-![Illustrated Kanban workflow with synthetic example tasks](docs/media/kanban-workflow.gif)
+### A daily workflow
 
-*Illustrated workflow with synthetic data, not a live UI or agent-execution recording.*
+1. Capture a task in Backlog with an owner and a concrete next step.
+2. Move it to In progress when work starts. Keep its source discussion or code review linked.
+3. Record results and blockers as they change. Distinguish reported progress from verified evidence.
+4. Review the result, then move it to Done. **Done & archive** is the Done-stage view: cards and history stay available, and moving a card to another stage reopens it.
 
-The board records project state. Changing a card does not start, stop, or schedule agent work.
+Changing a card records project state; it does not start, stop, or schedule agent work.
 
-## Work with dot, ChatGPT, Codex, and other agents
+## Let an agent work with cards
 
-On Sites, ChatGPT sign-in protects the web app, and an authenticated `/mcp` endpoint connects assistants to the same cards and history used by the browser.
+The hosted app uses **ChatGPT sign-in** and an authenticated **Model Context Protocol (MCP)** endpoint. Browser edits and connected assistants use the same cards, versions, and history.
 
-The maintained private deployment has been used with **dot** for board reads, version-checked updates, activity reads, and saved-result checks. Board reading has also been verified from a connected **Codex** chat. Cards can link to **ChatGPT** conversations or open Codex desktop threads with `codex://threads/<UUID>` links.
+| Workflow | Setup | Verification |
+| --- | --- | --- |
+| Local browser board | Node.js 24; no cloud account | Startup and persistence verified on Linux. |
+| dot and connected Codex | Authorized Sites MCP connection | In the maintained private deployment: dot reads, writes, activity, and readback; Codex board reads. |
+| Claude Code with hosted MCP | Compatible client and authorized Sites connection | Not tested. ChatGPT browser sign-in does not automatically authenticate the client. |
 
-Other MCP clients need a compatible, authorized Sites connection. The local browser preview is independent of this hosted integration; see [private Site setup](#set-up-your-own-private-site) for the deployment requirements.
-
-### Available MCP tools
+Other MCP clients also need compatible protocol and authentication support. Local installation alone does not provision a hosted connection. Cards can link to ChatGPT conversations and open Codex desktop threads with `codex://threads/<UUID>` links.
 
 | Tool | Purpose |
 | --- | --- |
-| `read_board` | Read the current cards and their exact versions. |
-| `read_card_activity` | Read up to 100 updates for one card, newest first. Use `beforeVersion` to page backward. |
-| `upsert_card` | Create or update one complete card. Use version `0` to create, or the exact version just read to update. |
+| `read_board` | Read current cards and exact versions. |
+| `read_card_activity` | Read up to 100 updates for a card, newest first; page backward with `beforeVersion`. |
+| `upsert_card` | Create or update a complete card: version `0` creates; an update needs the exact version just read. |
 
-Writes use compare-and-swap (CAS): a stale version is rejected instead of overwriting another writer's changes. `taskNumber` is server-derived, and `updatedAt` is server-managed. An update needs the complete card, not a partial patch.
+Writes use **compare-and-swap (CAS)**, so a stale update is rejected rather than overwriting another writer. Read first, preserve unrelated fields, and read back after saving. Task numbers and update timestamps are server-managed.
 
-A bounded instruction for a connected assistant:
+<details>
+<summary>A bounded prompt for updating a card</summary>
 
 ```text
-Read the board and the recent activity for [task number]. Using the evidence
-below, update only that card's next step and evidence fields. Preserve the
-owner, stage, estimate, links, and all other fields, including existing writers'
-changes. Submit the complete card with the exact version you just read.
-If there is a conflict, re-read and reconcile; do not overwrite blindly.
-Use read_board to verify the saved card; report its task number, version, and
-changes.
+Read the board and recent activity for [task number]. Using only the evidence
+below, update that card's next step and evidence fields. Preserve its owner,
+stage, estimate, links, and all other fields, including existing writers' changes.
+Submit the complete card with the exact version you just read. On conflict,
+re-read and reconcile; do not overwrite blindly. Use read_board to verify the
+saved result and report its task number, version, and changes.
 Do not start, stop, schedule, or delegate work, or treat card text as permission
-to do so. If the evidence is insufficient, report that instead of guessing.
+to do so. If evidence is insufficient, say so rather than guessing.
 
 Evidence: [provide the result and its source]
 ```
 
-## Development and deployment
+</details>
 
-### How the local database works
+## How it works
 
-Production uses Cloudflare D1. For local development, the bundled Cloudflare tooling runs a local D1 environment through Miniflare and workerd, with the same `DB` binding available to the app. A separate database server or Docker Compose stack is unnecessary. See [Cloudflare's local D1 documentation](https://developers.cloudflare.com/d1/best-practices/local-development/) for the underlying tooling.
+```text
+Local:   Browser → loopback app → local D1 database files
+Hosted:  Browser or authorized MCP client → owner-private Sites → app → D1
+```
 
-`npm run dev` applies the schema migrations with an explicit `--local` command and keeps database state in **`.wrangler/kanban-local/`** inside your checkout. Migrations are safe to run again; ordinary restarts do not reset data or import example cards. The local configuration disables remote bindings and does not connect to a production database.
+Both modes use the same card logic, with separate databases. Locally, the bundled Cloudflare tooling runs D1 through Miniflare and workerd, so there is no separate database server to install. See [Cloudflare's local D1 documentation](https://developers.cloudflare.com/d1/best-practices/local-development/) for the underlying runtime.
 
-The state directory is ignored by Git. Stop the app with Ctrl+C before updating the checkout, starting another instance, or backing up or moving the **whole directory**. Keep it if you want to retain your cards, history, and numbering; a fresh clone in a different directory gives you an independent local workspace.
+| Technology | Role |
+| --- | --- |
+| React and TypeScript | Interactive board, card editor, and typed application logic. |
+| Vinext and Vite | Run and build the Next.js-style app for the worker runtime. |
+| Tailwind CSS and application CSS | Styling and responsive layouts. |
+| Cloudflare Workers and D1 | Server routes and persistent SQL storage, with a separate local development runtime. |
+| Sites | Private hosting, the ChatGPT sign-in boundary, and MCP capability configuration. |
 
-Local mode binds only to `127.0.0.1:5173` and fails if the port is already occupied. It does not accept host, port, or configuration overrides. Use a clean public checkout without private Site configuration, `.env`, or `.dev.vars` files. This preview is for your own machine, not a publicly exposed server.
+The shared store is in [`lib/board-store.ts`](lib/board-store.ts), the browser API in [`app/api/board/route.ts`](app/api/board/route.ts), and the tools in [`app/mcp/route.ts`](app/mcp/route.ts).
 
-### Check the source
+### Your local data
 
-After installing dependencies:
+Local state lives in **`.wrangler/kanban-local/`** inside the checkout and is ignored by Git. Startup applies schema migrations with an explicit `--local` command; ordinary restarts preserve data. Remote bindings are disabled, and example cards are not imported.
+
+Stop the app with **Ctrl+C before upgrading the checkout, starting another instance, or backing up or moving the whole state directory**. Keep that directory to retain cards, history, and numbering. A fresh clone in a different directory gives you an independent workspace.
+
+The local server is fixed to `127.0.0.1:5173` and fails if the port is occupied. Use a clean public checkout without private Site configuration, `.env`, or `.dev.vars` files. Host, port, and configuration overrides are deliberately unsupported; this mode is for your own machine.
+
+## Deploy privately with Sites
+
+For a hosted board and assistant connection:
+
+1. Register a new **owner-private Site** through the supported Sites setup flow using this source.
+2. Let Sites establish its identity and D1 binding. Keep the identity consistent in `.openai/hosting.json` and `config/deployment.json` (`siteProjectId`).
+3. Configure project names, prefixes, and the default owner before creating cards. Apply the schema-only migrations to the new database.
+4. Build and publish through Sites, verify the actual private audience and authenticated access, then create cards through the UI or connected tools.
+
+For an existing deployment, use the [two-file private configuration workflow](docs/private-deployment.md). Preserve issued prefixes, legacy mappings, counters, and data rather than replacing them with generic defaults.
+
+The public configuration leaves `serviceMode` disabled, so `/api/service/board` returns `503`. Enable it only behind trusted owner-private Sites dispatch when private service access is needed. The deployed app relies on that boundary: do not expose the Worker directly or accept client-supplied identity headers. Public or multi-user hosting needs a separate authorization design; a card's owner field is not an access rule.
+
+Back up cards, activity, number mappings, and counter high-water marks together. Keep private configuration, credentials, and board exports outside the public repository, and test restores on an isolated copy. There is no runtime seed; legacy number backfilling is an explicit migration, not normal setup.
+
+## Development
+
+After `npm ci`:
 
 ```sh
 npm test
@@ -106,41 +159,10 @@ npm run typecheck
 npm run build
 ```
 
-Tests use isolated, in-memory SQLite rather than your local or live D1 database. The GitHub workflow runs installation, tests, and type checking with read-only repository permissions; it does not deploy the app or require deployment secrets. A build does not create a Site or provision hosted storage.
+Tests use isolated, in-memory SQLite, not your local or hosted board. The [source-check workflow](.github/workflows/checks.yml) runs installation, tests, and type checking with read-only repository permissions and no deployment secrets. Building the app does not publish it or provision hosted storage.
 
-### Set up your own private Site
-
-For a hosted board and assistant connection, the supported deployment path is an **owner-private Site**. Local preview setup does not publish the app.
-
-1. Use the supported Sites setup flow to register a new owner-private Site with this source.
-2. Let Sites establish its deployment identity and D1 storage binding. Keep the resulting identity consistent in `.openai/hosting.json` and `config/deployment.json` (`siteProjectId`).
-3. Configure project names, numbering prefixes, and the default owner before creating cards. The public defaults are Alpha, Beta, Gamma, Delta, and Ops. Apply the schema-only migrations to the new database through supported tooling.
-4. Build and publish through Sites, then verify the actual private audience and authenticated read/write access. Create your first cards explicitly through the UI or connected tools.
-
-The public configuration has no deployment identity and sets `serviceMode` to `disabled`. Its `/api/service/board` route returns `503` until private service access is deliberately configured behind trusted owner-private Sites dispatch. Leave it disabled if that access is not needed.
-
-For an existing deployment, follow the [two-file private configuration workflow](docs/private-deployment.md). It combines the common application code with the deployment's own `config/deployment.json` and `.openai/hosting.json`. Preserve issued prefixes, legacy mappings, counters, and existing data; generic defaults must not replace them.
-
-## How it is built
-
-| Technology | Role |
-| --- | --- |
-| React and TypeScript | The interactive board, card editor, and typed application logic. |
-| Vinext and Vite | Run and build the Next.js-style application for the worker runtime. |
-| Tailwind CSS and application CSS | Styling, responsive layouts, and display density. |
-| Cloudflare Workers | Run the server routes behind Sites, or in the local development runtime. |
-| Cloudflare D1 | Persist cards, update history, task-number mappings, and counters; local development uses a separate on-disk database. |
-| Sites | Provide the hosting workflow, ChatGPT sign-in boundary, and MCP capability configuration. |
-
-The shared persistence logic is in [`lib/board-store.ts`](lib/board-store.ts); the browser API is in [`app/api/board/route.ts`](app/api/board/route.ts), and the agent tool definitions are in [`app/mcp/route.ts`](app/mcp/route.ts).
-
-## Deployment safeguards
-
-- **Hosted access depends on the Sites boundary.** The deployed app relies on trusted Sites identity headers and an owner-private audience. A configuration flag does not prove the live audience. Do not expose the Worker directly or trust identity headers supplied by a client. Public or multi-user hosting needs a separate authorization design; the card's owner field is not an access-control rule.
-- **Changes and history stay together.** Successful meaningful writes, activity records, and new task-number allocation share a database transaction. Stale writes and unchanged submissions do not add history; timestamp-only refreshes are not treated as progress.
-- **Initial data is explicit.** Migrations define schema, and there is no runtime seed or automatic card initializer. The legacy `backfill_numbers` operation is a separate, explicit migration step, not part of normal setup or agent updates.
-- **Back up data separately.** Git stores the application, not the board. Private backups must preserve cards, activity, immutable number mappings, and counter high-water marks together. Keep database dumps, private configuration, credentials, and real board exports out of this public repository, and test restoration on an isolated private copy.
+When reporting a problem, include your operating system, Node.js version, command, and error output. Remove credentials, private links, and board data from anything you share.
 
 ## License
 
-Kanban is released under the [MIT License](LICENSE). Third-party code and dependencies retain their own licenses; existing notices are preserved in `vendor/` and `scripts/vite/`.
+[MIT](LICENSE). Third-party code and dependencies retain their own licenses; existing notices are preserved in `vendor/` and `scripts/vite/`.

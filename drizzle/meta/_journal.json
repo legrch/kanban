@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1793015170482,
+      "tag": "0000_elite_bishop",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1793022252452,
+      "tag": "0001_fresh_richard_fisk",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1793023551818,
+      "tag": "0002_rich_joseph",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1793026929753,
+      "tag": "0003_confused_purple_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1793026940309,
+      "tag": "0004_motionless_lenny_balinger",
+      "breakpoints": true
+    }
+  ]
+}

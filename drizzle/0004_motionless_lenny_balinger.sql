@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `project_task_number_unique` ON `project_task_numbers` (`prefix`,`number`);

@@ -6,11 +6,101 @@
 
 **Keep the next step, owner, and evidence together.**
 
-Kanban is a maintained, open-source workspace for human and AI-assisted projects. It brings tasks, supporting links, and update history into one board, so you can see what is moving, what is blocked, and what needs a decision. Run your own local board, or connect assistants through a private Sites deployment.
+Kanban is a maintained, open-source workspace for human and AI-assisted projects. It brings tasks, supporting links, and update history into one board, so you can see what is moving, what is blocked, and what needs a decision. Ask your dot to set up your own private cloud board, or run it locally on your computer.
 
-**Choose your path:** [With an agent](#install-with-codex-or-claude-code) · [In a terminal](#quick-start) · [Hosted assistants](#let-an-agent-work-with-cards)
+**Choose your path:** [Cloud board with your dot](#your-own-cloud-board-with-your-dot) · [Local quick start](#local-quick-start) · [Agent tools](#let-an-agent-work-with-cards)
 
-## Quick start
+## Your own cloud board, with your dot
+
+**Give your dot one request. Get your own private board, with a link you can open from your computer or phone.** Cards live in the hosted database, so you do not need to keep a local server running. Once its Kanban tools are connected, your dot can read and update the same board you use in the browser.
+
+This path needs **Sites available to your dot** and an account that can create a private Site. Hosting and plugin availability depend on your account; this repository does not include hosting or promise a free plan. Your dot should use the current Sites setup flow and show any required connection or approval steps. If those tools are unavailable, it should tell you what is missing, not silently install somewhere else.
+
+### Copy this prompt to your dot
+
+```text
+Set up my own private cloud Kanban from https://github.com/legrch/kanban
+using your current Sites workflow and the README's cloud setup checklist.
+Give me a hosted URL and connect your tools to my board—not a localhost preview.
+
+Create a new Site with its own database and fresh configuration; do not copy
+anyone else's board data, identity, or secrets. Keep it owner-private.
+Show required approvals or connection steps; do not commit me to paid services.
+Verify the deployed board and connected tools with an installation-check card.
+Report the URL, source revision, checks passed, and anything still pending.
+If Sites is unavailable, tell me what is missing rather than installing elsewhere.
+```
+
+You may need to sign in, approve publication, or connect the Site's plugin. Those are setup steps, not a reason to make the board public.
+
+**Verification boundary:** the maintained deployment has verified dot card reads, writes, history, and readback, plus connected Codex board reads. A fresh installation on a second account has **not yet been tested end to end**. Claude Code's direct connection to hosted Sites MCP is also untested.
+
+<details>
+<summary><strong>Cloud setup checklist—for your dot and technical readers</strong></summary>
+
+### What your dot sets up
+
+1. **A new private Site.** Its returned ID is written to `project_id` in `.openai/hosting.json` and `siteProjectId` in `config/deployment.json`. Project names, prefixes, and the default owner belong to your installation.
+2. **Persistent cloud storage.** The existing `DB` declaration asks Sites to provision D1. Sites applies the repository's schema migrations during publication; it does not import the maintainer's cards.
+3. **A connection for your assistant.** Publishing with the existing `mcp` capability creates a private App/plugin. Your dot reuses it, then checks `read_board`, `upsert_card`, and `read_card_activity` rather than assuming publication also connected the tools.
+
+If the tools do not appear automatically, your dot can retrieve the Site's MCP connection details and present the supported plugin installation flow. In ChatGPT or Codex, use the Site-created plugin; this route does not need a separate MCP server, `codex mcp add`, or copied API keys.
+
+### Verify before calling it ready
+
+- Read the repository configuration and current supported Sites workflow. Check account availability and show native approval or connection steps; do not bypass restrictions or create paid commitments.
+- Choose initial project labels and owner metadata for this installation. Keep the new Site ID consistent in both configuration files, retain `DB` and `mcp`, and leave `serviceMode` disabled. Authenticated MCP does not need the optional service endpoint.
+- Run applicable checks and build before publishing. Verify the hosted URL and owner-private audience separately from the tool connection. If browser verification is unavailable, report that limit.
+- Call `read_board` through the connected tools. Create one clearly labeled installation-check card, read it back, update its exact version, and verify its history. Confirm a stale-version update is rejected; leave the check card in Done. Do not use real tasks for these checks.
+- Report source revision, checks, deployment, and tool connection separately. Do not claim connected tools work before their calls succeed, and do not create schedules.
+
+ChatGPT browser sign-in does not automatically authenticate another MCP client. Use the supported Site-created connection rather than copying credentials or creating a second plugin.
+
+</details>
+
+Prefer to run it on your own machine instead? Use the [local quick start](#local-quick-start) below.
+
+## What you can do
+
+- **Focus on active work.** Keep Backlog separate from In progress, In review, and Blocked. Move cards with drag-and-drop or the stage selector.
+- **Find what needs attention.** Use board or list view, project and stage filters, text search, and quick views for blocked, high-priority, estimated, or unestimated tasks. Compact and comfortable layouts adapt to smaller screens.
+- **Leave a useful handoff.** Record the owner, context, next step, priority, evidence, and source or commit. Link to discussions and pull requests, or open a Codex desktop thread. Evidence can be marked Verified, Reported, or Not verified.
+- **Estimate deliberately.** Choose optional story points from 1, 2, 3, 5, 8, or 13. See active and Done-card totals alongside estimation coverage. These summarize current card values, not hours or velocity forecasts.
+- **Keep stable references.** Cards receive project numbers such as `ALP-001` and direct `/tasks/ALP-001` links. Moving a card to another project or stage preserves its number.
+- **Review meaningful changes.** History records changed fields and the saved snapshot, with earlier entries available in pages of 100. Tracking begins when enabled; unchanged submissions do not add noise.
+
+### A closer look
+
+*Illustrated details with sample data—not live screenshots.*
+
+#### Give the next person enough context
+
+![Illustrated task detail showing owner, next step, and evidence](docs/media/task-detail.png)
+
+Give every task an owner and a concrete next step. Keep evidence separate from status.
+
+#### See what changed
+
+![Illustrated card history with an expanded saved version](docs/media/task-history.png)
+
+Expand a version to see the status, owner, and next step recorded at that moment.
+
+#### Focus without losing the bigger picture
+
+![Illustrated project filter narrowing the visible board](docs/media/project-focus.png)
+
+Filter by project to focus the view without moving or deleting cards.
+
+### A daily workflow
+
+1. Capture a task in Backlog with an owner and a concrete next step.
+2. Move it to In progress when work starts. Keep its source discussion or code review linked.
+3. Record results and blockers as they change. Distinguish reported progress from verified evidence.
+4. Review the result, then move it to Done. **Done & archive** is the Done-stage view: cards and history stay available, and moving a card to another stage reopens it.
+
+Changing a card records project state; it does not start, stop, or schedule agent work.
+
+## Local quick start
 
 You need **Git and Node.js 24 with npm**:
 
@@ -27,9 +117,9 @@ No Docker, Cloudflare account, ChatGPT account, or API keys are needed locally. 
 
 Local startup and database persistence have been verified on Linux with Node.js 24. Other operating systems have not yet been verified.
 
-### Install with Codex or Claude Code
+### Install locally with Codex or Claude Code
 
-Give this request to Codex, Claude Code, or another coding assistant with terminal access. It creates your local browser board; it **does not connect the agent to the card tools**. For that, see [hosted MCP setup](#let-an-agent-work-with-cards).
+Give this request to Codex, Claude Code, or another coding assistant with terminal access. It creates your local browser board; it **does not connect the agent to the card tools**. For a hosted board and tool connection, use [the cloud setup prompt](#copy-this-prompt-to-your-dot).
 
 ```text
 Set up https://github.com/legrch/kanban in a new folder on my computer.
@@ -46,28 +136,6 @@ credentials, global settings, or production. No cloud credentials or network
 exposure. If port 5173 is occupied, do not kill another process or change ports.
 Report blockers and exact errors instead of bypassing restrictions.
 ```
-
-## What you can do
-
-- **Focus on active work.** Keep Backlog separate from In progress, In review, and Blocked. Move cards with drag-and-drop or the stage selector.
-- **Find what needs attention.** Use board or list view, project and stage filters, text search, and quick views for blocked, high-priority, estimated, or unestimated tasks. Compact and comfortable layouts adapt to smaller screens.
-- **Leave a useful handoff.** Record the owner, context, next step, priority, evidence, and source or commit. Link to discussions and pull requests, or open a Codex desktop thread. Evidence can be marked Verified, Reported, or Not verified.
-- **Estimate deliberately.** Choose optional story points from 1, 2, 3, 5, 8, or 13. See active and Done-card totals alongside estimation coverage. These summarize current card values, not hours or velocity forecasts.
-- **Keep stable references.** Cards receive project numbers such as `ALP-001` and direct `/tasks/ALP-001` links. Moving a card to another project or stage preserves its number.
-- **Review meaningful changes.** History records changed fields and the saved snapshot, with earlier entries available in pages of 100. Tracking begins when enabled; unchanged submissions do not add noise.
-
-![Illustrated Kanban board with synthetic example tasks](docs/media/kanban-board.png)
-
-*Illustrated board with synthetic data.*
-
-### A daily workflow
-
-1. Capture a task in Backlog with an owner and a concrete next step.
-2. Move it to In progress when work starts. Keep its source discussion or code review linked.
-3. Record results and blockers as they change. Distinguish reported progress from verified evidence.
-4. Review the result, then move it to Done. **Done & archive** is the Done-stage view: cards and history stay available, and moving a card to another stage reopens it.
-
-Changing a card records project state; it does not start, stop, or schedule agent work.
 
 ## Let an agent work with cards
 
@@ -134,14 +202,13 @@ Stop the app with **Ctrl+C before upgrading the checkout, starting another insta
 
 The local server is fixed to `127.0.0.1:5173` and fails if the port is occupied. Use a clean public checkout without private Site configuration, `.env`, or `.dev.vars` files. Host, port, and configuration overrides are deliberately unsupported; this mode is for your own machine.
 
-## Deploy privately with Sites
+## Deployment notes
 
-For a hosted board and assistant connection:
+For a new cloud board, start with [the dot setup prompt](#copy-this-prompt-to-your-dot). The public configuration is deliberately unregistered: `siteProjectId` is `null` and `serviceMode` is `disabled`. A clone alone does not create a Site, database, or connected plugin. Set the new Site identity in both configuration files, retain `d1: "DB"` and the `mcp` capability, and verify the actual audience through Sites.
 
-1. Register a new **owner-private Site** through the supported Sites setup flow using this source.
-2. Let Sites establish its identity and D1 binding. Keep the identity consistent in `.openai/hosting.json` and `config/deployment.json` (`siteProjectId`).
-3. Configure project names, prefixes, and the default owner before creating cards. Apply the schema-only migrations to the new database.
-4. Build and publish through Sites, verify the actual private audience and authenticated access, then create cards through the UI or connected tools.
+Normal browser and authenticated MCP use do **not** require enabling `/api/service/board`. Keep that optional service endpoint disabled for a new installation unless a separately authorized unattended service workflow needs it.
+
+The `assemble-private.mjs` helper is for an existing service-enabled deployment; it is not the bootstrap command for this new service-disabled setup.
 
 For an existing deployment, use the [two-file private configuration workflow](docs/private-deployment.md). Preserve issued prefixes, legacy mappings, counters, and data rather than replacing them with generic defaults.
 
@@ -162,6 +229,16 @@ npm run build
 Tests use isolated, in-memory SQLite, not your local or hosted board. The [source-check workflow](.github/workflows/checks.yml) runs installation, tests, and type checking with read-only repository permissions and no deployment secrets. Building the app does not publish it or provision hosted storage.
 
 When reporting a problem, include your operating system, Node.js version, command, and error output. Remove credentials, private links, and board data from anything you share.
+
+## Update the demo media
+
+The editable animation and feature-panel sources live in this repository. After the one-time [renderer setup](docs/media-generation.md), rebuild them with:
+
+```sh
+node scripts/media/build.cjs
+```
+
+Agents can follow the [project media skill](.agents/skills/kanban-media/SKILL.md). The [media guide](docs/media-generation.md) maps each scene to its source files and covers dependencies, synthetic fixtures, visual checks, and output limits. These are illustrated previews, not recordings of private boards.
 
 ## License
 

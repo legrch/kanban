@@ -6,25 +6,26 @@
 
 **Keep the next step, owner, and evidence together.**
 
-Kanban is a maintained, open-source workspace for human and AI-assisted projects. It brings tasks, supporting links, and update history into one board, so you can see what is moving, what is blocked, and what needs a decision. Ask your [OpenAI dot](https://openai.com/index/introducing-dots/)—an always-on agent you can talk to in ChatGPT—to set up your own private cloud board, or run it locally on your computer.
+Kanban is a maintained, open-source workspace for human and AI-assisted projects. It brings tasks, supporting links, and update history into one board, so you can see what is moving, what is blocked, and what needs a decision. Set up your own private Kanban for your [OpenAI dot in ChatGPT](https://openai.com/index/introducing-dots/), or run it locally on your computer.
 
 **Choose your path:** [Cloud board with your dot](#your-own-cloud-board-with-your-dot) · [Local quick start](#local-quick-start) · [Agent tools](#let-an-agent-work-with-cards)
 
 ## Your own cloud board, with your dot
 
-**Give your dot one request. Get your own private board, with a link you can open from your computer or phone.** Cards live in the hosted database, so you do not need to keep a local server running. Once its Kanban tools are connected, your dot can read and update the same board you use in the browser.
+<a href="https://chatgpt.com/dots">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/media/openai-blossom-white.svg">
+    <img src="docs/media/openai-blossom-black.svg" alt="OpenAI Blossom logo" width="40">
+  </picture>
+</a>
 
-This path needs **Sites available to your dot** and an account that can create a private Site. Hosting and plugin availability depend on your account; this repository does not include hosting or promise a free plan. Your dot should use the current Sites setup flow and show any required connection or approval steps. If those tools are unavailable, it should tell you what is missing, not silently install somewhere else.
-
-### What is a dot?
-
-[![OpenAI dots symbol](https://images.ctfassets.net/kftzwdyauwt9/KKSjto3MtJguvsLQsM1Bp/1704a6937d22b1bb3cac38dc5f43f9df/dots-o.svg)](https://openai.com/index/introducing-dots/)
-
-A **dot** is OpenAI's always-on agent, available through **ChatGPT**. It has its own cloud computer and can work with the apps you connect. This setup prompt belongs in **your dot's conversation**, not an ordinary ChatGPT chat without Sites tools.
+**Your own private Kanban for your OpenAI dot in ChatGPT.**
 
 **[Open your dot](https://chatgpt.com/dots)** · [Official setup guide](https://help.openai.com/en/articles/20001530-getting-started-with-your-dot)
 
-The symbol above is OpenAI's unchanged dots artwork, linked from its [official introduction](https://openai.com/index/introducing-dots/). OpenAI marks belong to OpenAI and are subject to its [brand guidelines](https://openai.com/brand/). Kanban is an independent open-source project, not an OpenAI product or endorsed integration.
+**Give your dot one request. Get your own private board, with a link you can open from your computer or phone.** Cards live in the hosted database, so you do not need to keep a local server running. Once its Kanban tools are connected, your dot can read and update the same board you use in the browser.
+
+This path needs **Sites available to your dot** and an account that can create a private Site. Hosting and plugin availability depend on your account; this repository does not include hosting or promise a free plan. Your dot should use the current Sites setup flow and show any required connection or approval steps. If those tools are unavailable, it should tell you what is missing, not silently install somewhere else.
 
 ### Copy this prompt to your dot
 
@@ -240,16 +241,10 @@ Tests use isolated, in-memory SQLite, not your local or hosted board. The [sourc
 
 When reporting a problem, include your operating system, Node.js version, command, and error output. Remove credentials, private links, and board data from anything you share.
 
-## Update the demo media
-
-The editable animation and feature-panel sources live in this repository. After the one-time [renderer setup](docs/media-generation.md), rebuild them with:
-
-```sh
-node scripts/media/build.cjs
-```
-
-Agents can follow the [project media skill](.agents/skills/kanban-media/SKILL.md). The [media guide](docs/media-generation.md) maps each scene to its source files and covers dependencies, synthetic fixtures, visual checks, and output limits. These are illustrated previews, not recordings of private boards.
+For rebuilding the illustrated previews, see the [media guide](docs/media-generation.md).
 
 ## License
 
 [MIT](LICENSE). Third-party code and dependencies retain their own licenses; existing notices are preserved in `vendor/` and `scripts/vite/`.
+
+Kanban is independent, not affiliated with or endorsed by OpenAI. The OpenAI logo is excluded from MIT; see [asset sources and terms](docs/media/ASSET-SOURCES.md).
